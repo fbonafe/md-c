@@ -5,7 +5,7 @@ float timedifference_msec(struct timeval t0, struct timeval t1)
     return (t1.tv_sec - t0.tv_sec) + (t1.tv_usec - t0.tv_usec) / 1000000.0f;
 }
 
-int main(int argc, char** argv) {
+int main(float nparticles, float nsteps) {
   FILE *file_time, *file_energy;
   struct timeval start, now;
   file_time = fopen("time.dat", "w");
@@ -14,12 +14,12 @@ int main(int argc, char** argv) {
   System *sys = (System *) malloc(sizeof(System));
 #pragma omp parallel
     sys->nthreads = omp_get_num_threads();
-  if (argc != 3) {
+    /* if (argc != 3) {
     fprintf(stderr, "usage: %s n_steps n_particles\n", argv[0]);
     exit(1);
-  }
-  sys->n_particles = atoi(argv[2]);
-  sys->n_steps = atoi(argv[1]);
+    } */
+  sys->n_particles = nparticles; /*atoi(argv[2]);*/
+  sys->n_steps = nsteps; /*atoi(argv[1]);*/
   sys->size = cbrt(sys->n_particles/0.45);
   sys->rcut = 2.5;
   sys->phicut = 4.0*(pow(2.5, -12) - pow (2.5, -6));
