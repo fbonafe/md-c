@@ -2,7 +2,7 @@
 CC = gcc
 
 CC_FLAGS = -g -std=gnu99 -O3 -fopenmp -ffast-math -mavx2 -fno-inline
-LD_FLAGS = -lm -lomp
+LD_FLAGS = -lm -lgomp
 
 LD = $(CC)
 
