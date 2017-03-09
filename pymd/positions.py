@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-import ctypes as C
 
 def simplecubic(size, n_particles):
     number_side = int(np.ceil(n_particles**(1./3.)))

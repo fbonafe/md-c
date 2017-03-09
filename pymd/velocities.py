@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 import random as rnd
 import numpy as np
-import ctypes as C
 
 
 def random(n_particles):
