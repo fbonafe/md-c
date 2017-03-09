@@ -9,7 +9,7 @@ class Plotter (object):
         self.fig = None
         self.ax = None
     
-    def plot1(self, x, y) :
+    def plot1(self, x, y):
         
         if self.fig == None:
             plt.ion() 

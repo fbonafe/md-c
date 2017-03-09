@@ -13,4 +13,8 @@ while i < 10 :
     y = i**2
     my_plot.plot1(x,y)
     i+= 1
-plt.show(block=True)
+
+plt.show(block = True)
+if not plt.ion():
+    plt.ioff()
+    plt.show()
