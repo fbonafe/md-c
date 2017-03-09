@@ -6,7 +6,7 @@ import numpy as np
 
 def random(n_particles):
     rnd.seed(6000)
-    velocities = np.zeros((3*n_particles))
+    velocities = np.zeros(3*n_particles,  dtype=np.float64)
     for i in range(3*n_particles):
         velocities[i] = rnd.random()
     return velocities

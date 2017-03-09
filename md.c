@@ -76,6 +76,5 @@ int main(System *sys) {
   gettimeofday(&now, NULL);
   double elapsed = timedifference_msec(start, now);
   printf("Steps: %d, Part: %d, Time: %f\n", sys->n_steps, sys->n_particles, elapsed);
-
   return 0;
 }

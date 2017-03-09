@@ -1,8 +1,8 @@
 .PHONY: default help object sharedlib all clean
 CC = gcc
 
-CC_FLAGS = -g -std=gnu99 -O3 -fopenmp -ffast-math -mavx2 -fno-inline -fPIC
-LD_FLAGS = -lm -lgomp -fopenmp -shared
+CC_FLAGS = -g -std=gnu99 -O0 -fopenmp -ffast-math -mavx2 -fno-inline -fPIC
+LD_FLAGS = -lm -fopenmp -shared
 
 LD = $(CC)
 

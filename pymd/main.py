@@ -9,6 +9,7 @@ c_int = C.c_int
 c_fl_pointer = C.POINTER(C.c_float)
 c_db_pointer = C.POINTER(C.c_double)
 c_int_pointer = C.POINTER(C.c_int)
+#c_db_pointer = C.c_void_p
 
 
 #class Cell(C.Structure):
@@ -42,7 +43,7 @@ class System(C.Structure):
     def __init__(self):
         density = 0.45
         self.n_steps = 1000
-        self.n_particles = 10
+        self.n_particles = 10000
         
         self.timestep = 0.0005
         self.size = (self.n_particles/density)**(1./3.)
@@ -50,15 +51,16 @@ class System(C.Structure):
         self.kinetic = 0.0
         self.rcut = 2.5
         self.phicut = 4 * (self.rcut**(-12) - self.rcut**(-6))
-        self.nthreads = 0
+        self.nthreads = 4
         
-        nparr_position = pos.simplecubic(self.size, self.n_particles)
-        nparr_velocity = vels.random(self.n_particles)
-        nparr_forces = np.zeros((3 * self.n_particles))
+        self.position_a = pos.simplecubic(self.size, self.n_particles)
+        self.velocity_a = vels.random(self.n_particles)
+        self.force_a = np.zeros((3 * self.n_particles * self.nthreads),dtype=np.float64)
+        np.savetxt('pos.dat',self.position_a)
         
-        self.position = nparr_position.ctypes.data_as(c_db_pointer)
-        self.velocity = nparr_velocity.ctypes.data_as(c_db_pointer)
-        self.force = nparr_forces.ctypes.data_as(c_db_pointer)
+        self.position = self.position_a.ctypes.data_as(c_db_pointer)
+        self.velocity = self.velocity_a.ctypes.data_as(c_db_pointer)
+        self.force = self.force_a.ctypes.data_as(c_db_pointer)
 
         
 class MD(C.Structure):
