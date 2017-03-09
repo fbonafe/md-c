@@ -5,6 +5,7 @@ void newton(System *sys, CellList *clist) {
   for (int i = 0; i < 3 * sys->nthreads * sys->n_particles; i++)
     sys->force[i] = 0.0;
 #pragma omp parallel reduction(+:epot)
+
   {
     for (int cc = 0; cc < clist->ncells; cc+=sys->nthreads) {
       int tid = omp_get_thread_num();
