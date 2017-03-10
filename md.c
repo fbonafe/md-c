@@ -21,6 +21,24 @@ int simpleloop(int nsteps, System *sys, CellList *clist, Integrator *integ) {
   return 0;
 }
 
+int get_num_threads() {
+  int nthreads;
+#pragma omp parallel
+  nthreads = omp_get_num_threads();
+  return nthreads;
+}
+
+int init_vars(System *sys, CellList *clist, Integrator *integ) {
+  fill_cells(clist, sys);
+  integ->timestep = sys->timestep;
+
+  printf("%d threads\n", sys->nthreads);
+  update_cells(clist, sys);
+  newton(sys, clist);
+  kinetic(sys);
+  return 0;
+}
+
 
 int mainloop(System *sys, CellList *clist, Integrator *integ, FILE *file_energy, FILE *file_time, struct timeval start, struct timeval now) {
   for (int i = 0; i < sys->n_steps; i++) {
@@ -35,20 +53,6 @@ int mainloop(System *sys, CellList *clist, Integrator *integ, FILE *file_energy,
 }
 
 
-int init_vars(System *sys, CellList *clist, Integrator *integ) {
-#pragma omp parallel
-  sys->nthreads = omp_get_num_threads();
-  init_cells(clist, sys, 2.5);
-  integ->timestep = sys->timestep;
-
-  printf("%d threads\n", sys->nthreads);
-  update_cells(clist, sys);
-  newton(sys, clist);
-  kinetic(sys);
-  return 0;
-}
-
-
 int main(int argc, char** argv) {
   FILE *file_time, *file_energy;
   struct timeval start, now;
@@ -58,8 +62,8 @@ int main(int argc, char** argv) {
 
   System *sys = (System *) malloc(sizeof(System));
 
-#pragma omp parallel
-  sys->nthreads = omp_get_num_threads();
+  sys->nthreads = get_num_threads();
+  printf("%d threads\n", sys->nthreads);
 
   if (argc != 3) {
     fprintf(stderr, "usage: %s n_steps n_particles\n", argv[0]);
@@ -71,11 +75,14 @@ int main(int argc, char** argv) {
   sys->rcut = 2.5;
   sys->phicut = 4.0*(pow(2.5, -12) - pow (2.5, -6));
   init_system(sys);
-
+  
   CellList *clist = (CellList *) malloc(sizeof(CellList));
+  init_cells(clist, sys, 2.5);
   Integrator *integ = (Integrator *) malloc(sizeof(Integrator));
-  init_vars(sys, clist, integ);
   integ->timestep = 0.0005;
+  update_cells(clist, sys);
+  newton(sys, clist);
+  kinetic(sys);
 
   gettimeofday(&start, NULL);
   mainloop(sys, clist, integ, file_energy, file_time, start, now);

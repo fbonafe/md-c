@@ -1,8 +1,13 @@
 #include "system.h"
 
+void init_vels(System *sys) {
+  srand(6000);
+  for (int i = 0; i < 3 * sys->n_particles; i++)
+    sys->velocity[i] = (double)rand()/RAND_MAX;
+}
+
 void init_system(System *sys) {
   //  srand(time(NULL));
-  srand(6000);
   sys->position = (double *)malloc(sys->n_particles*3*sizeof(double));
   sys->velocity = (double *)malloc(sys->n_particles*3*sizeof(double));
   sys->force = (double *)malloc(sys->n_particles * sys->nthreads*3*sizeof(double));
@@ -20,6 +25,5 @@ void init_system(System *sys) {
       }
     }
   }
-  for (int i = 0; i < 3 * sys->n_particles; i++)
-    sys->velocity[i] = (double)rand()/RAND_MAX;
+  init_vels(sys);
 }
