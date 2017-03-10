@@ -1,10 +1,22 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+"""
+.. module:: initial velocities
+   :platform: GNU Linux
+   :synopsis: Python interface for a C code to run efficient MD simulations.
+
+.. moduleauthor:: TeamMD WCTP17 <no@email.com>
+
+"""
 import random as rnd
 import numpy as np
 
 
 def random(n_particles):
+    """
+    Defines random velocities normalized to one for "n_particles".
+    
+    Args:
+        n_particles (int): number of particles
+    """
     rnd.seed(6000)
     velocities = np.zeros(3*n_particles,  dtype=np.float64)
     for i in range(3*n_particles):

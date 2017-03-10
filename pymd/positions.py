@@ -1,9 +1,23 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+"""
+.. module:: structure builder
+   :platform: GNU Linux
+   :synopsis: Python interface for a C code to run efficient MD simulations.
 
+.. moduleauthor:: TeamMD WCTP17 <no@email.com>
+
+"""
 import numpy as np
 
 def simplecubic(size, n_particles):
+    """
+    Buils simple structure of "n_particles" arranged in a cube lattice with 
+    side length "size"
+    
+    Args:
+        size (int): size of the cube
+        n_particles (int): number of particles
+    
+    """
     number_side = int(np.ceil(n_particles**(1./3.)))
     distance = size / number_side
     idx = 0
