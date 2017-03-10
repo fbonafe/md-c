@@ -113,7 +113,7 @@ class System(C.Structure):
                 ("rcut", c_double), ("phicut", c_double),
                 ("nthreads", c_int)]
                
-    def __init__(self, n_particles=1000, n_steps=1000, timestep=0.0005, saveevery=10):
+    def __init__(self, n_particles=1000, n_steps=1000, timestep=0.0005, saveevery=1):
         """
         Inteface to C structure.
         
