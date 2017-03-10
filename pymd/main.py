@@ -57,12 +57,13 @@ class System(C.Structure):
                 ("rcut", c_double), ("phicut", c_double),
                 ("nthreads", c_int)]
                
-    def __init__(self):
+    def __init__(self, n_particles=100, n_steps=1000, timestep=0.0005, saveevery=10):
         density = 0.45
-        self.n_steps = 1000
-        self.n_particles = 1000
+
+        self.n_steps = n_steps
+        self.n_particles = n_particles
         
-        self.timestep = 0.0005
+        self.timestep = timestep
         self.size = (self.n_particles/density)**(1./3.)
         self.potential = 0.0
         self.kinetic = 0.0
@@ -78,7 +79,7 @@ class System(C.Structure):
         self.velocity = self.velocity_a.ctypes.data_as(c_db_pointer)
         self.force = self.force_a.ctypes.data_as(c_db_pointer)
         
-        self.saveevery = 10
+        self.saveevery = saveevery
 
         
 class MD(C.Structure):
@@ -115,9 +116,22 @@ class MD(C.Structure):
         efile.close()
         tfile.close()
 
-
-my_system = System()
-my_clist = CellList()
-my_integ = Integrator()
-this_MD = MD(my_system, my_clist, my_integ)
-this_MD.run()
+    def runInnerLoop(self, i):
+        step = i * self.system.saveevery
+        self.time = step * self.system.timestep
+        #efile.write("{}, {}, {}\n".format(self.system.potential, 
+        #                self.system.kinetic, 
+        #                self.system.potential+self.system.kinetic))
+        #tfile.write("{}, {}\n".format(step, self.time))
+            
+        self.mdc.simpleloop(self.system.saveevery, C.byref(self.system), 
+                              C.byref(self.clist), C.byref(self.integ))
+        
+        #efile.close()
+        #tfile.close()
+        return 	self.system.potential, self.system.kinetic
+#my_system = System()
+#my_clist = CellList()
+#my_integ = Integrator()
+#this_MD = MD(my_system, my_clist, my_integ)
+#this_MD.run()
