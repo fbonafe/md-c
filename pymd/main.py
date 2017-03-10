@@ -90,7 +90,9 @@ class System(C.Structure):
         self.kinetic = 0.0
         self.rcut = 2.5
         self.phicut = 4 * (self.rcut**(-12) - self.rcut**(-6))
-        self.nthreads = 4
+        
+        mdc.get_num_threads.restype = C.c_int
+        self.nthreads = mdc.get_num_threads()
         
         self.position_a = pos.simplecubic(self.size, self.n_particles)
         self.force_a = np.zeros((3 * self.n_particles * self.nthreads),dtype=np.float64)

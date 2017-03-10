@@ -21,10 +21,14 @@ int simpleloop(int nsteps, System *sys, CellList *clist, Integrator *integ) {
   return 0;
 }
 
+int get_num_threads() {
+  int nthreads;
+#pragma omp parallel
+  nthreads = omp_get_num_threads();
+  return nthreads;
+}
 
 int init_vars(System *sys, CellList *clist, Integrator *integ) {
-#pragma omp parallel
-  sys->nthreads = omp_get_num_threads();
   fill_cells(clist, sys);
   integ->timestep = sys->timestep;
 
@@ -58,8 +62,7 @@ int main(int argc, char** argv) {
 
   System *sys = (System *) malloc(sizeof(System));
 
-#pragma omp parallel
-  sys->nthreads = omp_get_num_threads();
+  sys->nthreads = get_num_threads();
   printf("%d threads\n", sys->nthreads);
 
   if (argc != 3) {
@@ -71,9 +74,8 @@ int main(int argc, char** argv) {
   sys->size = cbrt(sys->n_particles/0.45);
   sys->rcut = 2.5;
   sys->phicut = 4.0*(pow(2.5, -12) - pow (2.5, -6));
-  sys->nthreads = omp_get_num_threads();
   init_system(sys);
-
+  
   CellList *clist = (CellList *) malloc(sizeof(CellList));
   init_cells(clist, sys, 2.5);
   Integrator *integ = (Integrator *) malloc(sizeof(Integrator));
