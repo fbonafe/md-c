@@ -7,7 +7,7 @@ LD_FLAGS = -lm -lgomp -fopenmp -shared
 LD = $(CC)
 
 SOURCE_C = $(wildcard *.c)
-OBJECTS_C = $(patsubst %.c, %.o, $(SOURCE_C))
+OBJECTS_C = $(patsubst %.c, %_.o, $(SOURCE_C))
 
 SHAREDLIB = libmd.so
 
@@ -19,8 +19,8 @@ sharedlib: $(SHAREDLIB)
 
 all: objects sharedlib
 
-%.o: %.c
-	$(CC) $(CC_FLAGS) -c $^
+%_.o: %.c
+	$(CC) $(CC_FLAGS) -c $^ -o $@
 
 %.so: $(OBJECTS_C)
 	$(LD) $(LD_FLAGS) $^ -o $@

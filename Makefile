@@ -1,13 +1,13 @@
 .PHONY: default help object sharedlib all clean
 CC = gcc
 
-CC_FLAGS = -g -std=gnu99 -O0 -fopenmp -ffast-math -mavx2 -fno-inline -fPIC
-LD_FLAGS = -lm -fopenmp -shared
+CC_FLAGS = -g -std=gnu99 -O3 -fopenmp -ffast-math -mavx2 -fno-inline -fPIC
+LD_FLAGS = -lm -lgomp -fopenmp -shared
 
 LD = $(CC)
 
 SOURCE_C = $(wildcard *.c)
-OBJECTS_C = $(patsubst %.c, %.o, $(SOURCE_C))
+OBJECTS_C = $(patsubst %.c, %_.o, $(SOURCE_C))
 
 SHAREDLIB = libmd.so
 
@@ -19,8 +19,8 @@ sharedlib: $(SHAREDLIB)
 
 all: objects sharedlib
 
-%.o: %.c
-	$(CC) $(CC_FLAGS) -c $^
+%_.o: %.c
+	$(CC) $(CC_FLAGS) -c $^ -o $@
 
 %.so: $(OBJECTS_C)
 	$(LD) $(LD_FLAGS) $^ -o $@

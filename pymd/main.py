@@ -84,36 +84,40 @@ class System(C.Structure):
 class MD(C.Structure):
     def __init__(self, system, clist, integ):
         self.mdc = C.CDLL('../libmd.so')
-        self.mdc.main.argtypes = [C.POINTER(System), 
-                             C.POINTER(CellList), C.POINTER(Integrator)]
-        self.mdc.main.restype = c_int
-        self.mdc.mainloop.argtypes = [c_int, C.POINTER(System), 
+        self.mdc.simpleloop.argtypes = [c_int, C.POINTER(System), 
                              C.POINTER(CellList), C.POINTER(Integrator)]
         self.mdc.init_vars.argtypes = [C.POINTER(System), 
                              C.POINTER(CellList), C.POINTER(Integrator)]
+        self.mdc.omp_get_num_threads.restype = c_int 
+        self.mdc.omp_get_num_threads.argtypes = None
         self.system = system
         self.clist = clist
         self.integ = integ
         self.mdc.init_vars(C.byref(self.system), C.byref(self.clist), 
                            C.byref(self.integ))
         self.time = 0
-        
-    def runmain(self):
-        self.mdc.main(C.byref(self.system), C.byref(self.clist), 
-                      C.byref(self.integ))
-        
+            
     def run(self):
         outerloops = int(self.system.n_steps/self.system.saveevery)
+        efile = open('energy.dat', 'w')
+        tfile = open('time.dat', 'w')
         for i in range(outerloops):
-            self.time = i * self.system.saveevery * self.system.timestep 
-            self.mdc.mainloop(self.system.saveevery, C.byref(self.system), 
-                              C.byref(self.clist), C.byref(self.integ))
-            print(self.time, self.system.potential, self.system.kinetic)
-
+            step = i * self.system.saveevery
+            self.time = step * self.system.timestep
+            efile.write("{}, {}, {}\n".format(self.system.potential, 
+                        self.system.kinetic, 
+                        self.system.potential+self.system.kinetic))
+            tfile.write("{}, {}\n".format(step, self.time))
             
+            self.mdc.simpleloop(self.system.saveevery, C.byref(self.system), 
+                              C.byref(self.clist), C.byref(self.integ))
+        
+        efile.close()
+        tfile.close()
+
+
 my_system = System()
 my_clist = CellList()
 my_integ = Integrator()
 this_MD = MD(my_system, my_clist, my_integ)
-this_MD.runmain()
 #this_MD.run()
