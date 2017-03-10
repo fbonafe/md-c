@@ -30,6 +30,7 @@ struct cell_list_t {
 
 typedef struct cell_list_t CellList;
 
+void fill_cells(CellList *clist, System *sys);
 void init_cells(CellList *clist, System *sys, double size);
 void update_cells(CellList *clist, System *sys);
 #endif

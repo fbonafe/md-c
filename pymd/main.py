@@ -20,9 +20,9 @@ class Cell(C.Structure):
                 ("ix", c_int), ("iy", c_int), ("iz", c_int)]
                 
     def __init__(self):
-        self.particles = C.byref(c_int)
+#        self.particles = C.c_int
+#        self.neigh = C.c_int
         self.n_particles = 0
-        self.neigh = C.byref(c_int)
         self.nneigh = 0
         self.ix = 0
         self.iy = 0
@@ -34,19 +34,42 @@ class CellList(C.Structure):
                 ("size", c_double),
                 ("cells_side", c_int), ("ncells", c_int)]
                 
-#    def __init__(self):
-#        self.list = C.c_void_p
-#        self.size = 0.0
-#        self.cells_side = 0
-#        self.ncells = 0
-                
+    def __init__(self, sys):
+        size = 2.5
+        self.cells_side = int(np.ceil(sys.size/size))
+        self.size = sys.size/self.cells_side
+        self.ncells = self.cells_side**3
+        
+        elements = (Cell * self.ncells)()
+        self.list = C.cast(elements, C.POINTER(Cell))
+        
+        idx = 0
+        for i in range(self.cells_side):
+            for j in range(self.cells_side):
+                for k in range(self.cells_side):
+                    cell = Cell()
+                    cell.ix = i
+                    cell.iy = j
+                    cell.iz = k
+                    cell.nneigh = 0
+                    
+                    neigh = (c_int * self.ncells) ()
+                    cell.neigh = C.cast(neigh, C.POINTER(c_int))
+                    
+                    particles = (c_int * sys.n_particles) ()
+                    cell.particles = C.cast(particles, C.POINTER(c_int))
+                    
+                    self.list[idx] = cell
+                    idx += 1
+
+               
 class Integrator(C.Structure):
     _fields_ = [("timestep", c_double)]
 
     def __init__(self):
         self.timestep = 0.0
-#
 
+        
 class System(C.Structure):
     _fields_ = [("timestep", c_double), ("size", c_double), 
                 ("position", c_db_pointer), ("velocity", c_db_pointer),
@@ -104,10 +127,10 @@ class MD(C.Structure):
         for i in range(outerloops):
             step = i * self.system.saveevery
             self.time = step * self.system.timestep
-            efile.write("{}, {}, {}\n".format(self.system.potential, 
+            efile.write("{:.3f}, {:.3f}, {:.3f}\n".format(self.system.potential, 
                         self.system.kinetic, 
                         self.system.potential+self.system.kinetic))
-            tfile.write("{}, {}\n".format(step, self.time))
+            tfile.write("{:.3f}, {:.3f}\n".format(step, self.time))
             
             self.mdc.simpleloop(self.system.saveevery, C.byref(self.system), 
                               C.byref(self.clist), C.byref(self.integ))
@@ -117,7 +140,7 @@ class MD(C.Structure):
 
 
 my_system = System()
-my_clist = CellList()
+my_clist = CellList(my_system)
 my_integ = Integrator()
 this_MD = MD(my_system, my_clist, my_integ)
-#this_MD.run()
+this_MD.run()
