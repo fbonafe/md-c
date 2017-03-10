@@ -9,7 +9,8 @@ c_int = C.c_int
 c_fl_pointer = C.POINTER(C.c_float)
 c_db_pointer = C.POINTER(C.c_double)
 c_int_pointer = C.POINTER(C.c_int)
-#c_db_pointer = C.c_void_p
+
+mdc = C.CDLL('../libmd.so')
 
 
 class Cell(C.Structure):
@@ -20,8 +21,6 @@ class Cell(C.Structure):
                 ("ix", c_int), ("iy", c_int), ("iz", c_int)]
                 
     def __init__(self):
-#        self.particles = C.c_int
-#        self.neigh = C.c_int
         self.n_particles = 0
         self.nneigh = 0
         self.ix = 0
@@ -94,36 +93,41 @@ class System(C.Structure):
         self.nthreads = 4
         
         self.position_a = pos.simplecubic(self.size, self.n_particles)
-        self.velocity_a = vels.random(self.n_particles)
         self.force_a = np.zeros((3 * self.n_particles * self.nthreads),dtype=np.float64)
-        
+        self.init_velocities(from_C=True)       
         self.position = self.position_a.ctypes.data_as(c_db_pointer)
-        self.velocity = self.velocity_a.ctypes.data_as(c_db_pointer)
         self.force = self.force_a.ctypes.data_as(c_db_pointer)
         
-        self.saveevery = 10
-
+        self.saveevery = 1
+        
+    def init_velocities(self, from_C=False):
+        self.velocity_a = vels.random(self.n_particles)
+        self.velocity = self.velocity_a.ctypes.data_as(c_db_pointer)
+        if from_C:
+            mdc.init_vels.argtypes = [C.POINTER(System)]
+            mdc.init_vels(C.byref(self))
         
 class MD(C.Structure):
     def __init__(self, system, clist, integ):
-        self.mdc = C.CDLL('../libmd.so')
-        self.mdc.simpleloop.argtypes = [c_int, C.POINTER(System), 
-                             C.POINTER(CellList), C.POINTER(Integrator)]
-        self.mdc.init_vars.argtypes = [C.POINTER(System), 
-                             C.POINTER(CellList), C.POINTER(Integrator)]
-        self.mdc.omp_get_num_threads.restype = c_int 
-        self.mdc.omp_get_num_threads.argtypes = None
         self.system = system
         self.clist = clist
         self.integ = integ
-        self.mdc.init_vars(C.byref(self.system), C.byref(self.clist), 
-                           C.byref(self.integ))
         self.time = 0
+        mdc.simpleloop.argtypes = [c_int, C.POINTER(System), 
+                             C.POINTER(CellList), C.POINTER(Integrator)]
+        mdc.init_vars.argtypes = [C.POINTER(System), 
+                             C.POINTER(CellList), C.POINTER(Integrator)]
+        mdc.omp_get_num_threads.restype = c_int 
+        mdc.omp_get_num_threads.argtypes = None
+        
+        mdc.init_vars(C.byref(self.system), C.byref(self.clist), 
+                           C.byref(self.integ))
             
     def run(self):
         outerloops = int(self.system.n_steps/self.system.saveevery)
         efile = open('energy.dat', 'w')
         tfile = open('time.dat', 'w')
+        
         for i in range(outerloops):
             step = i * self.system.saveevery
             self.time = step * self.system.timestep
@@ -132,7 +136,7 @@ class MD(C.Structure):
                         self.system.potential+self.system.kinetic))
             tfile.write("{:.3f}, {:.3f}\n".format(step, self.time))
             
-            self.mdc.simpleloop(self.system.saveevery, C.byref(self.system), 
+            mdc.simpleloop(self.system.saveevery, C.byref(self.system), 
                               C.byref(self.clist), C.byref(self.integ))
         
         efile.close()
