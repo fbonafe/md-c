@@ -113,7 +113,7 @@ class System(C.Structure):
                 ("rcut", c_double), ("phicut", c_double),
                 ("nthreads", c_int)]
                
-    def __init__(self):
+    def __init__(self, n_particles=1000, n_steps=1000, timestep=0.0005, saveevery=10):
         """
         Inteface to C structure.
         
@@ -128,10 +128,10 @@ class System(C.Structure):
             sigma (float): sigma paramenter in Lennard-Jones potential
         """
         density = 0.45
-        self.n_steps = 1000
-        self.n_particles = 10000
-        
-        self.timestep = 0.0005
+
+        self.n_steps = n_steps
+        self.n_particles = n_particles        
+        self.timestep = timestep
         self.size = (self.n_particles/density)**(1./3.)
         self.potential = 0.0
         self.kinetic = 0.0
@@ -146,8 +146,7 @@ class System(C.Structure):
         self.init_velocities(from_C=True)       
         self.position = self.position_a.ctypes.data_as(c_db_pointer)
         self.force = self.force_a.ctypes.data_as(c_db_pointer)
-        
-        self.saveevery = 50
+        self.saveevery = saveevery
         
     def init_velocities(self, from_C=False):
         """
@@ -224,6 +223,15 @@ class MD(C.Structure):
         efile.close()
         tfile.close()
 
+    def runInnerLoop(self, i):
+        step = i * self.system.saveevery
+        self.time = step * self.system.timestep
+            
+        self.mdc.simpleloop(self.system.saveevery, C.byref(self.system), 
+                              C.byref(self.clist), C.byref(self.integ))
+        return self.system.potential, self.system.kinetic
+
+        
 if __name__ == "__main__":
     my_system = System()
     my_clist = CellList(my_system)
