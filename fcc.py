@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-def simple_cubic(density,n_particles):
+def fcc(density,n_particles):
     size = (n_particles / density)**(1/3.)
     number_side = (n_particles)**(1/3.)
     distance = size / number_side
@@ -31,9 +31,9 @@ y=np.zeros(n_particles)
 z=np.zeros(n_particles)
 
 for i in range(n_particles):
-    x[i] = simple_cubic(1,n_particles)[3*i]
-    y[i] = simple_cubic(1,n_particles)[3*i+1]
-    z[i] = simple_cubic(1,n_particles)[3*i+2]
+    x[i] = fcc(1,n_particles)[3*i]
+    y[i] = fcc(1,n_particles)[3*i+1]
+    z[i] = fcc(1,n_particles)[3*i+2]
 
 fig= plt.figure()
 ax = fig.add_subplot(111,projection='3d')

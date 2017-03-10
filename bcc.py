@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-def fcc1(density,n_particles):
+def bcc(density,n_particles):
     size = (n_particles / density)**(1/3.)
     number_side = (n_particles)**(1/3.)
     distance = size / number_side
@@ -14,12 +14,13 @@ def fcc1(density,n_particles):
                 for k in range(int(number_side)):
                     if index_particle == n_particles:
                         break
-                    if j%2 != 0:
+                    if j%2 == 0:
+                        position[3*index_particle + 0] = i * distance
                         position[3*index_particle + 2] = k * distance
                     else:
+                        position[3*index_particle + 0] = i * distance + 1/2.
                         position[3*index_particle + 2] = k * distance + 1/2.
                         
-                    position[3*index_particle + 0] = i * distance
                     position[3*index_particle + 1] = j * distance
                     index_particle = index_particle + 1
     
@@ -31,9 +32,9 @@ y=np.zeros(n_particles)
 z=np.zeros(n_particles)
 
 for i in range(n_particles):
-    x[i] = fcc1(1,n_particles)[3*i]
-    y[i] = fcc1(1,n_particles)[3*i+1]
-    z[i] = fcc1(1,n_particles)[3*i+2]
+    x[i] = bcc(1,n_particles)[3*i]
+    y[i] = bcc(1,n_particles)[3*i+1]
+    z[i] = bcc(1,n_particles)[3*i+2]
 
 fig= plt.figure()
 ax = fig.add_subplot(111,projection='3d')
