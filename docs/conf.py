@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
-# Wtpc-Molecular Dynamics documentation build configuration file, created by
-# sphinx-quickstart on Fri Mar 10 12:41:59 2017.
+# TeaMD #WTPC17 documentation build configuration file, created by
+# sphinx-quickstart on Fri Mar 10 18:10:52 2017.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -30,7 +30,6 @@ import os
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    'sphinx.ext.coverage',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -48,7 +47,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Wtpc-Molecular Dynamics'
+project = u'TeaMD #WTPC17'
 copyright = u'2017, Bonafe - Foggia - Guennam - Tosi'
 author = u'Bonafe - Foggia - Guennam - Tosi'
 
@@ -202,7 +201,7 @@ html_static_path = ['_static']
 #html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'Wtpc-Molecular Dynamicsdoc'
+htmlhelp_basename = 'TeaMDWTPC17doc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -224,8 +223,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'Wtpc-Dinamica_Molecular.tex', u'Wtpc-Dinamica\\_Molecular Documentation',
-     u'Bonafe-Foggia-Guennam-Tosi', 'manual'),
+    (master_doc, 'TeaMDWTPC17.tex', u'TeaMD \\#WTPC17 Documentation',
+     u'Bonafe - Foggia - Guennam - Tosi', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -254,7 +253,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'wtpc-dinamica_molecular', u'Wtpc-Dinamica_Molecular Documentation',
+    (master_doc, 'teamdwtpc17', u'TeaMD #WTPC17 Documentation',
      [author], 1)
 ]
 
@@ -268,8 +267,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'Wtpc-Dinamica_Molecular', u'Wtpc-Dinamica_Molecular Documentation',
-     author, 'Wtpc-Dinamica_Molecular', 'One line description of project.',
+    (master_doc, 'TeaMDWTPC17', u'TeaMD #WTPC17 Documentation',
+     author, 'TeaMDWTPC17', 'One line description of project.',
      'Miscellaneous'),
 ]
 

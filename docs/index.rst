@@ -1,17 +1,15 @@
-.. Wtpc-Dinamica_Molecular documentation master file, created by
-   sphinx-quickstart on Fri Mar 10 12:41:59 2017.
+.. TeaMD #WTPC17 documentation master file, created by
+   sphinx-quickstart on Fri Mar 10 18:10:52 2017.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Wtpc-Dinamica_Molecular's documentation!
-===================================================
+Welcome to TeaMD #WTPC17's documentation!
+=========================================
 
 Contents:
 
 .. toctree::
    :maxdepth: 2
-   
-   
 
 
 
