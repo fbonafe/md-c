@@ -20,7 +20,7 @@ c_fl_pointer = C.POINTER(C.c_float)
 c_db_pointer = C.POINTER(C.c_double)
 c_int_pointer = C.POINTER(C.c_int)
 
-mdc = C.CDLL('./libmd.so')
+mdc = C.CDLL('/home/franco/wtpc/md/md/libmd.so')
 
 
 class Cell(C.Structure):
@@ -128,17 +128,17 @@ class System(C.Structure):
             epsilon (float): epsilon paramenter in Lennard-Jones potential
             sigma (float): sigma paramenter in Lennard-Jones potential
         """
-        density = 0.45
+        #density = 0.45
         self.n_steps = n_steps
         self.n_particles = n_particles        
         self.timestep = timestep
-        self.size = (self.n_particles/density)**(1./3.)
+        self.size = size #(self.n_particles/density)**(1./3.)
         self.potential = 0.0
         self.kinetic = 0.0
         self.sigma = sigma
         self.epsilon = epsilon
         self.mass = mass
-        self.rcut = 2.5
+        self.rcut = rcut
         self.phicut = 4 * (self.rcut**(-12) - self.rcut**(-6))
         
         mdc.get_num_threads.restype = C.c_int

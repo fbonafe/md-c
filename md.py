@@ -26,22 +26,23 @@ running = False
 #============================================================================================
 class RunParam():
     ''' Estructura de datos de los parametros de la simulacion.'''
-    def __init__(self):
-        self.npart = 100
-        self.dt = 0.0005
-        self.nsteps = 1000
-        self.totaltime = 0.0
-        self.densPart = 1.0
-        self.cellSize = 0.0
-        self.rcut = 2.5
-        self.epsilon = 1.0
-        self.sigma = 1.0
-        self.mass = 1.0
-        self.T0 = 0.4
-        self.nproc = 4
-        self.saveevery = 10
-        self.outerloops = 0
-
+    def __init__(self, npart=100, dt=0.0005, nsteps=1000, totaltime=0.0,
+                 densPart=1.0, cellSize=0.0, rcut=2.5, epsilon=1.0, 
+                 sigma=1.0, mass=1.0, T0=0.0, nproc=4, saveevery=10):
+        self.npart        = npart
+        self.dt           = dt    
+        self.nsteps       = nsteps
+        self.totaltime    = totaltime
+        self.densPart     = densPart
+        self.cellSize     = cellSize
+        self.rcut         = rcut
+        self.epsilon      = epsilon
+        self.sigma        = sigma
+        self.mass         = mass
+        self.T0           = T0
+        self.nproc        = nproc
+        self.saveevery    = saveevery
+        self.outerloops   = 0
 #============================================================================================
 #                                        CLASS
 #============================================================================================
@@ -268,7 +269,7 @@ class Window(QtWidgets.QDialog):
             self.txtNStepsOrTTime.setText(str(self.myRunParam.totaltime))
         if self.cmbDensOrCellSize.currentText() == "Densidad de Particulas":
             self.txtDensOrCellSize.setText(str(self.myRunParam.densPart))
-        elif self.cmbDensOrCellSize.currentText() == "Tamanio de Celda":
+        elif self.cmbDensOrCellSize.currentText() == "Tamaño de Celda":
             self.txtDensOrCellSize.setText(str(self.myRunParam.cellSize))
         self.txtRcut.setText(str(self.myRunParam.rcut))
         self.txtEpsilon.setText(str(self.myRunParam.epsilon))
@@ -363,10 +364,10 @@ class Window(QtWidgets.QDialog):
             #Calculo la densidad:
             self.myRunParam.densPart = float(self.myRunParam.npart) / self.myRunParam.cellSize**3
 
-        self.myRunParam.Rcut = float(self.txtRcut.text())
-        self.myRunParam.Epsilon = float(self.txtEpsilon.text())
-        self.myRunParam.Sigma = float(self.txtSigma.text())
-        self.myRunParam.Mass = float(self.txtMass.text())
+        self.myRunParam.rcut = float(self.txtRcut.text())
+        self.myRunParam.epsilon = float(self.txtEpsilon.text())
+        self.myRunParam.sigma = float(self.txtSigma.text())
+        self.myRunParam.mass = float(self.txtMass.text())
         self.myRunParam.T0 = float(self.txtT0.text())
         self.myRunParam.nproc = int(self.txtNProc.text())
 
@@ -427,6 +428,9 @@ def main():
     main = Window()
     main.show()
     sys.exit(app.exec_())
+    
+def opengui():
+    main()
 
 
 if __name__ == '__main__':
