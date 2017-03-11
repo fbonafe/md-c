@@ -112,7 +112,7 @@ class System(C.Structure):
                 ("n_steps", c_int), 
                 ("rcut", c_double), ("phicut", c_double),
                 ("nthreads", c_int),("sigma",c_double),
-				("epsilon",c_double),("mass",c_double)]
+                ("epsilon",c_double),("mass",c_double)]
                
     def __init__(self, size, n_particles, n_steps=1000, timestep=0.0005, saveevery=10, rcut=2.5, epsilon=1.0, sigma=1.0, mass=1.0, T0=1.0):
         """
@@ -135,9 +135,9 @@ class System(C.Structure):
         self.size = (self.n_particles/density)**(1./3.)
         self.potential = 0.0
         self.kinetic = 0.0
-		self.sigma = sigma
+        self.sigma = sigma
         self.epsilon = epsilon
-		self.mass = mass
+        self.mass = mass
         self.rcut = 2.5
         self.phicut = 4 * (self.rcut**(-12) - self.rcut**(-6))
         

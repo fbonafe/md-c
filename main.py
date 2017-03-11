@@ -34,9 +34,9 @@ class RunParam():
         self.densPart = 1.0
         self.cellSize = 0.0
         self.rcut = 2.5
-        self.epsilon = 0.1
-        self.sigma = 0.2
-        self.mass = 0.3
+        self.epsilon = 1.0
+        self.sigma = 1.0
+        self.mass = 1.0
         self.T0 = 0.4
         self.nproc = 4
         self.saveevery = 10
@@ -125,6 +125,7 @@ class Window(QtWidgets.QDialog):
         self.txtNProc = QtWidgets.QLineEdit()
         self.txtNProc.setFixedSize(60,20)
         self.lblNProc = QtWidgets.QLabel("Nro de Proc.")
+        self.txtNProc.setEnabled(False)
 
         #Cuadro de texto paso de tiempo
         self.txtTStep = QtWidgets.QLineEdit()
@@ -165,8 +166,8 @@ class Window(QtWidgets.QDialog):
         self.txtSigma = QtWidgets.QLineEdit()
         self.txtSigma.setFixedSize(60,20)
         self.lblSigma = QtWidgets.QLabel("Sigma")
-		
-		#Cuadro de texto Mass
+
+        #Cuadro de texto Mass
         self.txtMass = QtWidgets.QLineEdit()
         self.txtMass.setFixedSize(60,20)
         self.lblMass = QtWidgets.QLabel("Mass")
@@ -193,8 +194,8 @@ class Window(QtWidgets.QDialog):
         self.lblMonitor = QtWidgets.QLabel("Monitor")
 
         #Group box
-        SimParamFrame = QtWidgets.QGroupBox(self)
-        SimParamFrame.setTitle("Parametros")
+        #SimParamFrame = QtWidgets.QGroupBox(self)
+        #SimParamFrame.setTitle("Parametros")
 
         # set the layout
         layout = QtWidgets.QHBoxLayout()
@@ -225,11 +226,12 @@ class Window(QtWidgets.QDialog):
         gridLayout.addWidget(self.lblRcut,5,0)
         gridLayout.addWidget(self.lblEpsilon,6,0)
         gridLayout.addWidget(self.lblSigma,7,0)
-        gridLayout.addWidget(self.cmbT0,8,0)
+        gridLayout.addWidget(self.lblMass,8,0)
+        gridLayout.addWidget(self.cmbT0,9,0)
 
-        gridLayout.addWidget(self.lblNProc,9,0)
+        gridLayout.addWidget(self.lblNProc,10,0)
 
-        gridLayout.addWidget(self.lblMonitor,10,0)
+        gridLayout.addWidget(self.lblMonitor,11,0)
         #.........................................
 
         gridLayout.addWidget(self.txtNPart,1,1)
@@ -241,14 +243,15 @@ class Window(QtWidgets.QDialog):
         gridLayout.addWidget(self.txtRcut,5,1)
         gridLayout.addWidget(self.txtEpsilon,6,1)
         gridLayout.addWidget(self.txtSigma,7,1)
-        gridLayout.addWidget(self.txtT0,8,1)
+        gridLayout.addWidget(self.txtMass,8,1)
+        gridLayout.addWidget(self.txtT0,9,1)
 
-        gridLayout.addWidget(self.txtNProc,9,1)
+        gridLayout.addWidget(self.txtNProc,10,1)
 
-        gridLayout.addWidget(self.cmbPostVar,10,1)
+        gridLayout.addWidget(self.cmbPostVar,11,1)
 
-        gridLayout.addWidget(self.btnRun,11,0)
-        gridLayout.addWidget(self.btnSaveResults,12,0)
+        gridLayout.addWidget(self.btnRun,12,0)
+        gridLayout.addWidget(self.btnSaveResults,13,0)
 
 
 
@@ -256,22 +259,23 @@ class Window(QtWidgets.QDialog):
 
 #------------------------------------------------------------------------------------------
     def loadValues(self):
-		''' Carga los valores de los parametros del modelo a la interfaz grafica. '''
-		self.txtNPart.setText(str(self.myRunParam.npart))
-		self.txtTStep.setText(str(self.myRunParam.dt))
-		if self.cmbNStepsOrTTime.currentText() == "Nro de pasos":
-			self.txtNStepsOrTTime.setText(str(self.myRunParam.nsteps))
-		elif self.cmbNStepsOrTTime.currentText() == "Tiempo Total":
-			self.txtNStepsOrTTime.setText(str(self.myRunParam.totaltime))
-		if self.cmbDensOrCellSize.currentText() == "Densidad de Particulas":
-			self.txtDensOrCellSize.setText(str(self.myRunParam.densPart))
-		elif self.cmbDensOrCellSize.currentText() == "Tamanio de Celda":
-			self.txtDensOrCellSize.setText(str(self.myRunParam.cellSize))
-		self.txtRcut.setText(str(self.myRunParam.rcut))
-		self.txtEpsilon.setText(str(self.myRunParam.epsilon))
-		self.txtSigma.setText(str(self.myRunParam.sigma))
-		self.txtT0.setText(str(self.myRunParam.T0))
-		self.txtNProc.setText(str(self.myRunParam.nproc))
+        ''' Carga los valores de los parametros del modelo a la interfaz grafica. '''
+        self.txtNPart.setText(str(self.myRunParam.npart))
+        self.txtTStep.setText(str(self.myRunParam.dt))
+        if self.cmbNStepsOrTTime.currentText() == "Nro de pasos":
+            self.txtNStepsOrTTime.setText(str(self.myRunParam.nsteps))
+        elif self.cmbNStepsOrTTime.currentText() == "Tiempo Total":
+            self.txtNStepsOrTTime.setText(str(self.myRunParam.totaltime))
+        if self.cmbDensOrCellSize.currentText() == "Densidad de Particulas":
+            self.txtDensOrCellSize.setText(str(self.myRunParam.densPart))
+        elif self.cmbDensOrCellSize.currentText() == "Tamanio de Celda":
+            self.txtDensOrCellSize.setText(str(self.myRunParam.cellSize))
+        self.txtRcut.setText(str(self.myRunParam.rcut))
+        self.txtEpsilon.setText(str(self.myRunParam.epsilon))
+        self.txtSigma.setText(str(self.myRunParam.sigma))
+        self.txtMass.setText(str(self.myRunParam.mass))
+        self.txtT0.setText(str(self.myRunParam.T0))
+        self.txtNProc.setText(str(self.myRunParam.nproc))
 #------------------------------------------------------------------------------------------
     def cmbPostVarChangeText(self):
         varIndex = variables.index(self.cmbPostVar.currentText())
@@ -316,8 +320,9 @@ class Window(QtWidgets.QDialog):
         self.txtRcut.setEnabled(enabled)
         self.txtEpsilon.setEnabled(enabled)
         self.txtSigma.setEnabled(enabled)
+        self.txtMass.setEnabled(enabled)
         self.txtT0.setEnabled(enabled)
-        self.txtNProc.setEnabled(enabled)
+        self.txtNProc.setEnabled(False)
         self.cmbNStepsOrTTime.setEnabled(enabled)
         self.cmbDensOrCellSize.setEnabled(enabled)
         self.cmbT0.setEnabled(enabled)
@@ -326,58 +331,58 @@ class Window(QtWidgets.QDialog):
         self.btnRun.setEnabled(enabled)
         return
 #------------------------------------------------------------------------------------------
-	def readValues(self):
-		''' Lee los valores de las cuadros de textos para ser pasados como argumento '''
+    def readValues(self):
+        ''' Lee los valores de las cuadros de textos para ser pasados como argumento '''
 
-		self.myRunParam.npart = int(self.txtNPart.text())
-		self.myRunParam.dt    = float(self.txtTStep.text())
+        self.myRunParam.npart = int(self.txtNPart.text())
+        self.myRunParam.dt = float(self.txtTStep.text())
 
-        #print 'self.cmbNStepsOrTTime.currentText(): ', self.cmbNStepsOrTTime.currentText()
-		if self.cmbNStepsOrTTime.currentText() == "Nro de pasos":
-            #print 'Se ingresa el nro de pasos...'
-			self.myRunParam.nsteps = int(self.txtNStepsOrTTime.text())
-            #calculo el tiempo total:
-			self.myRunParam.totaltime = float(self.myRunParam.nsteps) * self.myRunParam.dt
-		elif self.cmbNStepsOrTTime.currentText() == "Tiempo Total":
-			#print 'Se ingresa el tiempo total...'
-			self.myRunParam.totaltime = float(self.txtNStepsOrTTime.text())
-			#Calculo el nro de pasos:
-			#aca considero que el usuario siempre va a ingresar un tiempo total tal que al dividir en dt se obtendra un nro entero.
-			self.myRunParam.nsteps = int(self.myRunParam.totaltime / self.myRunParam.dt)
-			#print 'self.cmbDensOrCellSize.currentText(): ', self.cmbDensOrCellSize.currentText()
-		if self.cmbDensOrCellSize.currentText() == "Densidad de Particulas":
-			#print 'Se ingresa la densidad de particulas...'
-			self.myRunParam.densPart = float(self.txtDensOrCellSize.text())
-			#calculo el tamanio de la celda:
-			#   densidad = nro particulas / cellSize**3  -> cellSize = (nro particulas / densidad) ** 1/3
-			self.myRunParam.cellSize = float(self.myRunParam.npart) / self.myRunParam.densPart
-			self.myRunParam.cellSize = self.myRunParam.cellSize**(1.0/3.0)
-		elif self.cmbDensOrCellSize.currentText() == "Tamanio de Celda":
-			#print 'Se ingresa el tamanio de celdas...'
-			self.myRunParam.cellSize = float(self.txtDensOrCellSize.text())
-			#Calculo la densidad:
-			self.myRunParam.densPart = float(self.myRunParam.npart) / self.myRunParam.cellSize**3
+    #print 'self.cmbNStepsOrTTime.currentText(): ', self.cmbNStepsOrTTime.currentText()
+        if self.cmbNStepsOrTTime.currentText() == "Nro de pasos":
+        #print 'Se ingresa el nro de pasos...'
+            self.myRunParam.nsteps = int(self.txtNStepsOrTTime.text())
+        #calculo el tiempo total:
+            self.myRunParam.totaltime = float(self.myRunParam.nsteps) * self.myRunParam.dt
+        elif self.cmbNStepsOrTTime.currentText() == "Tiempo Total":
+            #print 'Se ingresa el tiempo total...'
+            self.myRunParam.totaltime = float(self.txtNStepsOrTTime.text())
+            #Calculo el nro de pasos:
+            #aca considero que el usuario siempre va a ingresar un tiempo total tal que al dividir en dt se obtendra un nro entero.
+            self.myRunParam.nsteps = int(self.myRunParam.totaltime / self.myRunParam.dt)
+            #print 'self.cmbDensOrCellSize.currentText(): ', self.cmbDensOrCellSize.currentText()
+        if self.cmbDensOrCellSize.currentText() == "Densidad de Particulas":
+            #print 'Se ingresa la densidad de particulas...'
+            self.myRunParam.densPart = float(self.txtDensOrCellSize.text())
+            #calculo el tamanio de la celda:
+            #   densidad = nro particulas / cellSize**3  -> cellSize = (nro particulas / densidad) ** 1/3
+            self.myRunParam.cellSize = float(self.myRunParam.npart) / self.myRunParam.densPart
+            self.myRunParam.cellSize = self.myRunParam.cellSize**(1.0/3.0)
+        elif self.cmbDensOrCellSize.currentText() == "Tamanio de Celda":
+            #print 'Se ingresa el tamanio de celdas...'
+            self.myRunParam.cellSize = float(self.txtDensOrCellSize.text())
+            #Calculo la densidad:
+            self.myRunParam.densPart = float(self.myRunParam.npart) / self.myRunParam.cellSize**3
 
-		self.myRunParam.Rcut = float(self.txtRcut.text())
-		self.myRunParam.Epsilon = float(self.txtEpsilon.text())
-		self.myRunParam.Sigma = float(self.txtSigma.text())
-		self.myRunParam.Mass = float(self.txtMass.text())
-		self.myRunParam.T0 = float(self.txtT0.text())
-		self.myRunParam.nproc = int(self.txtNProc.text())
+        self.myRunParam.Rcut = float(self.txtRcut.text())
+        self.myRunParam.Epsilon = float(self.txtEpsilon.text())
+        self.myRunParam.Sigma = float(self.txtSigma.text())
+        self.myRunParam.Mass = float(self.txtMass.text())
+        self.myRunParam.T0 = float(self.txtT0.text())
+        self.myRunParam.nproc = int(self.txtNProc.text())
 
 
-		print('Nro de Particulas        : ',self.myRunParam.npart)
-		print('Paso de tiempo           : ',self.myRunParam.dt)
-		print('Duracion de la Simulacion: ',self.myRunParam.totaltime)
-		print('Nro de pasos             : ',self.myRunParam.nsteps)
-		print('Densidad de Particulas   : ',self.myRunParam.densPart)
-		print('Tamanio de Celda         : ',self.myRunParam.cellSize)
-		print('Radio de corte           : ',self.myRunParam.rcut)
-		print('Epsilon                  : ',self.myRunParam.epsilon)
-		print('Sigma                    : ',self.myRunParam.sigma)
-		print('Mass                    : ',self.myRunParam.mass)
-		print('T0                       : ',self.myRunParam.T0)
-		print('Nro de Procesadores      : ',self.myRunParam.nproc)
+        print('Nro de Particulas        : ',self.myRunParam.npart)
+        print('Paso de tiempo           : ',self.myRunParam.dt)
+        print('Duracion de la Simulacion: ',self.myRunParam.totaltime)
+        print('Nro de pasos             : ',self.myRunParam.nsteps)
+        print('Densidad de Particulas   : ',self.myRunParam.densPart)
+        print('Tamanio de Celda         : ',self.myRunParam.cellSize)
+        print('Radio de corte           : ',self.myRunParam.rcut)
+        print('Epsilon                  : ',self.myRunParam.epsilon)
+        print('Sigma                    : ',self.myRunParam.sigma)
+        print('Mass                     : ',self.myRunParam.mass)
+        print('T0                       : ',self.myRunParam.T0)
+        print('Nro de Procesadores      : ',self.myRunParam.nproc)
 #------------------------------------------------------------------------------------------
     def post(self):
         ''' Grafica los resultados luego de finalizada la corrida '''
@@ -397,8 +402,8 @@ class Window(QtWidgets.QDialog):
         my_system = pymd.System(self.myRunParam.cellSize, self.myRunParam.npart,
                                 n_steps=self.myRunParam.nsteps,
                                 timestep=self.myRunParam.dt, saveevery=10,
-                                rcut=self.myRunParam.rcut, epsilon=self.myRunParam.epsilon, sigma=self.myRunParam.sigma, mass=self.myRunParam.sigma,
-                                T0=self.myRunParam.T0)
+                                rcut=self.myRunParam.rcut, epsilon=self.myRunParam.epsilon, sigma=self.myRunParam.sigma, 
+                                mass=self.myRunParam.mass, T0=self.myRunParam.T0)
         my_clist  = pymd.CellList(my_system)
         my_integ  = pymd.Integrator()
         this_MD   = pymd.MD(my_system, my_clist, my_integ)
