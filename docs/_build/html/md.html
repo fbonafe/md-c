@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>md module &mdash; TeaMD #WTPC17 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="TeaMD #WTPC17 1.0 documentation" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-md">
+<span id="md-module"></span><h1>md module<a class="headerlink" href="#module-md" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="md.Results">
+<em class="property">class </em><code class="descclassname">md.</code><code class="descname">Results</code><a class="headerlink" href="#md.Results" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="md.Results.redim">
+<code class="descname">redim</code><span class="sig-paren">(</span><em>nvar=1</em>, <em>ndata=1</em><span class="sig-paren">)</span><a class="headerlink" href="#md.Results.redim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="md.RunParam">
+<em class="property">class </em><code class="descclassname">md.</code><code class="descname">RunParam</code><a class="headerlink" href="#md.RunParam" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="md.SolverInterface">
+<em class="property">class </em><code class="descclassname">md.</code><code class="descname">SolverInterface</code><a class="headerlink" href="#md.SolverInterface" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="md.SolverInterface.rpar">
+<code class="descname">rpar</code><em class="property"> = &lt;md.RunParam instance&gt;</em><a class="headerlink" href="#md.SolverInterface.rpar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="md.SolverInterface.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#md.SolverInterface.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="md.Window">
+<em class="property">class </em><code class="descclassname">md.</code><code class="descname">Window</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#md.Window" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">PyQt4.QtGui.QDialog</span></code></p>
+<dl class="method">
+<dt id="md.Window.cmbPostVarChangeText">
+<code class="descname">cmbPostVarChangeText</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#md.Window.cmbPostVarChangeText" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="md.Window.lblTStep">
+<code class="descname">lblTStep</code><em class="property"> = None</em><a class="headerlink" href="#md.Window.lblTStep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combo box que indica el modo de igresar el nro de particulas</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="md.Window.loadValues">
+<code class="descname">loadValues</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#md.Window.loadValues" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="md.Window.myResults">
+<code class="descname">myResults</code><em class="property"> = &lt;md.Results instance&gt;</em><a class="headerlink" href="#md.Window.myResults" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="md.Window.myRunParam">
+<code class="descname">myRunParam</code><em class="property"> = &lt;md.RunParam instance&gt;</em><a class="headerlink" href="#md.Window.myRunParam" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="md.Window.plotResults">
+<code class="descname">plotResults</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#md.Window.plotResults" title="Permalink to this definition">¶</a></dt>
+<dd><p>plot y vs x</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="md.Window.post">
+<code class="descname">post</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#md.Window.post" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="md.Window.readValues">
+<code class="descname">readValues</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#md.Window.readValues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lee los valores de las cuadros de textos para ser pasados como argumento</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="md.Window.runMD">
+<code class="descname">runMD</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#md.Window.runMD" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="md.main">
+<code class="descclassname">md.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#md.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Bonafe - Foggia - Guennam - Tosi.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/md.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,6 +1,6 @@
 #include "Params.h"
 
-void Params(double* params){
+void Params(System *sys){
   int elem;
 
   printf ( "\n" );
@@ -47,9 +47,9 @@ void Params(double* params){
 	  epsilon = 0.149;
 	  mass = 16.043;
   }
-  params[0] = sigma;
-  params[1] = epsilon;
-  params[2] = mass;
+  sys->sigma = sigma;
+  sys->epsilon = epsilon;
+  sys->mass = mass;
   /************************************/
   printf ("sigma = %lf\t epsilon = %lf\t mass = %lf\n", sigma, epsilon, mass);
   // printf ("p1 = %lf\t p2 = %lf\t p3 = %lf\n", params[0], params[1], params[2]);

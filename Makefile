@@ -1,29 +1,28 @@
-.PHONY: default help object executable all clean
+.PHONY: default help object sharedlib all clean
 CC = gcc
-
-CC_FLAGS = -g -std=gnu99 -O3 -fopenmp -ffast-math -mavx2 -fno-inline
-LD_FLAGS = -lm -lgomp
+CC_FLAGS = -g -std=gnu99 -O3 -fopenmp -ffast-math -mavx2 -fno-inline -fPIC
+LD_FLAGS = -lm -lgomp -fopenmp -shared
 
 LD = $(CC)
 
 SOURCE_C = $(wildcard *.c)
-OBJECTS_C = $(patsubst %.c, %_c.o, $(SOURCE_C))
+OBJECTS_C = $(patsubst %.c, %_.o, $(SOURCE_C))
 
-EXECUTABLE = md_c.e
+SHAREDLIB = libmd.so
 
 default: all
 
 objects: $(OBJECTS_C)
 
-executable: $(EXECUTABLE)
+sharedlib: $(SHAREDLIB)
 
-all: objects executable
+all: objects sharedlib
 
-%_c.o: %.c
+%_.o: %.c
 	$(CC) $(CC_FLAGS) -c $^ -o $@
 
-md_c.e: $(OBJECTS_C)
-	$(LD) $^ $(LD_FLAGS) -o $@
+%.so: $(OBJECTS_C)
+	$(LD) $(LD_FLAGS) $^ -o $@
 
 clean:
-	rm -rfv $(OBJECTS_C) $(EXECUTABLE)
+	rm -rfv $(OBJECTS_C) $(SHAREDLIB)

@@ -1,29 +1,6 @@
 #include "cell.h"
 
-void init_cells(CellList *clist, System *sys, double size) {
-  clist->cells_side = ceil(sys->size / size);
-  clist->size = sys->size/clist->cells_side;
-  clist->ncells = clist->cells_side * clist->cells_side * clist->cells_side;
-  clist->list = (Cell *) malloc(clist->ncells * sizeof(Cell));
-
-  int index = 0;
-  for (int i = 0; i < clist->cells_side; i++) {
-    for (int j = 0; j < clist->cells_side; j++) {
-      for (int k = 0; k < clist->cells_side; k++) {
-        Cell this_cell;
-        this_cell.ix = i;
-        this_cell.iy = j;
-        this_cell.iz = k;
-        this_cell.nneigh = 0;
-        this_cell.neigh = (int *) malloc(clist->ncells * sizeof(int));
-        this_cell.particles = (int *) malloc(sys->n_particles * sizeof(int));
-        this_cell.n_particles = 0;
-        clist->list[index] = this_cell;
-        index += 1;
-      }
-    }
-  }
-
+void fill_cells(CellList *clist, System *sys) {
   for (int i = 0; i < clist->ncells; i++) {
     for (int j = i + 1; j < clist->ncells; j++) {
       Cell *ci = &(clist->list[i]);
@@ -50,6 +27,33 @@ void init_cells(CellList *clist, System *sys, double size) {
       }
     }
   }
+}
+
+
+void init_cells(CellList *clist, System *sys, double size) {
+  clist->cells_side = ceil(sys->size / size);
+  clist->size = sys->size/clist->cells_side;
+  clist->ncells = clist->cells_side * clist->cells_side * clist->cells_side;
+  clist->list = (Cell *) malloc(clist->ncells * sizeof(Cell));
+
+  int index = 0;
+  for (int i = 0; i < clist->cells_side; i++) {
+    for (int j = 0; j < clist->cells_side; j++) {
+      for (int k = 0; k < clist->cells_side; k++) {
+        Cell this_cell;
+        this_cell.ix = i;
+        this_cell.iy = j;
+        this_cell.iz = k;
+        this_cell.nneigh = 0;
+        this_cell.neigh = (int *) malloc(clist->ncells * sizeof(int));
+        this_cell.particles = (int *) malloc(sys->n_particles * sizeof(int));
+        this_cell.n_particles = 0;
+        clist->list[index] = this_cell;
+        index += 1;
+      }
+    }
+  }
+  fill_cells(clist, sys);
 }
 
 

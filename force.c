@@ -1,7 +1,10 @@
 #include "force.h"
 
-void newton(System *sys, CellList *clist, double sigma, double epsilon, double mass) {
+void newton(System *sys, CellList *clist) {
   double epot = 0.0;
+  double sigma = sys->sigma;
+  double epsilon = sys->epsilon;
+  double mass = sys->mass;
   for (int i = 0; i < 3 * sys->nthreads * sys->n_particles; i++)
     sys->force[i] = 0.0;
 #pragma omp parallel reduction(+:epot)

@@ -2,7 +2,8 @@
 #define PARAMS_H
 #include <stdio.h>
 #include <stdlib.h>
+#include "system.h"
 
-void Params(double* params);
+void Params(System *sys);
 
 #endif
