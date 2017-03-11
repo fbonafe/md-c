@@ -113,7 +113,7 @@ class System(C.Structure):
                 ("rcut", c_double), ("phicut", c_double),
                 ("nthreads", c_int)]
                
-    def __init__(self, n_particles=1000, n_steps=1000, timestep=0.0005, saveevery=1):
+    def __init__(self, size, n_particles, n_steps=1000, timestep=0.0005, saveevery=10, rcut=2.5, epsilon=1.0, sigma=1.0, T0=1.0):
         """
         Inteface to C structure.
         
@@ -128,7 +128,6 @@ class System(C.Structure):
             sigma (float): sigma paramenter in Lennard-Jones potential
         """
         density = 0.45
-
         self.n_steps = n_steps
         self.n_particles = n_particles        
         self.timestep = timestep
@@ -140,9 +139,11 @@ class System(C.Structure):
         
         mdc.get_num_threads.restype = C.c_int
         self.nthreads = mdc.get_num_threads()
+        print ('number of threads is',self.nthreads)
         
         self.position_a = pos.simplecubic(self.size, self.n_particles)
-        self.force_a = np.zeros((3 * self.n_particles * self.nthreads),dtype=np.float64)
+        self.force_a = np.zeros((3 * self.n_particles * self.nthreads), dtype=np.float64)
+
         self.init_velocities(from_C=True)       
         self.position = self.position_a.ctypes.data_as(c_db_pointer)
         self.force = self.force_a.ctypes.data_as(c_db_pointer)
@@ -227,13 +228,13 @@ class MD(C.Structure):
         step = i * self.system.saveevery
         self.time = step * self.system.timestep
             
-        self.mdc.simpleloop(self.system.saveevery, C.byref(self.system), 
+        mdc.simpleloop(self.system.saveevery, C.byref(self.system), 
                               C.byref(self.clist), C.byref(self.integ))
-        return self.system.potential, self.system.kinetic
+        return 2.*self.system.kinetic/3., self.system.potential, self.system.kinetic, self.system.potential + self.system.kinetic
 
 
 if __name__ == "__main__":
-    my_system = System()
+    my_system = System(13., 1000)
     my_clist = CellList(my_system)
     my_integ = Integrator()
     this_MD = MD(my_system, my_clist, my_integ)

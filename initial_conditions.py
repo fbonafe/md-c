@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 
-def simplecubic(density,n_particles):
+def simplecubic(size, n_particles):
     """ 
     Calculates the positions of particles when they are in a simple cubic crystaline shape. 
     
@@ -22,23 +22,20 @@ def simplecubic(density,n_particles):
     :returns: position (numpy.array (dim=3*n_particles) )
     
     """
-    size = (n_particles / density)**(1/3.)
-    number_side = (n_particles)**(1/3.)
+    number_side = int(np.ceil(n_particles**(1./3.)))
     distance = size / number_side
-    index_particle = 0
-    position = np.zeros(3*n_particles)
-
-    for i in range(int(number_side)):
-        for j in range(int(number_side)):
-            for k in range(int(number_side)):
-                if index_particle == n_particles:
+    idx = 0
+    positions = np.zeros(3*n_particles, dtype=np.float64)
+    for i in range(number_side):
+        for j in range(number_side):
+            for k in range(number_side):
+                if (idx == n_particles):
                     break
-                position[3*index_particle + 0] = i * distance
-                position[3*index_particle + 1] = j * distance
-                position[3*index_particle + 2] = k * distance
-                index_particle = index_particle + 1
-    
-    return position
+                positions[3 * idx + 0] = i * distance
+                positions[3 * idx + 1] = j * distance
+                positions[3 * idx + 2] = k * distance
+                idx += 1
+    return positions
 
 
 def fcc(density,n_particles):
@@ -56,7 +53,7 @@ def fcc(density,n_particles):
     number_side = (n_particles)**(1/3.)
     distance = size / number_side
     index_particle = 0
-    position = np.zeros(3*n_particles)
+    position = np.zeros(3*n_particles, dtype=np.float64)
 
     for i in range(int(number_side)):
         for j in range(int(number_side)):
@@ -90,7 +87,7 @@ def bcc(density,n_particles):
     number_side = (n_particles)**(1/3.)
     distance = size / number_side
     index_particle = 0
-    position = np.zeros(3*n_particles)
+    position = np.zeros(3*n_particles, dtype=np.float64)
 
     for i in range(int(number_side)):
         for j in range(int(number_side)):
