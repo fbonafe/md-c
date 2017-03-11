@@ -1,0 +1,316 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pymd module &mdash; TeaMD #WTPC17 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="TeaMD #WTPC17 1.0 documentation" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pymd">
+<span id="pymd-module"></span><h1>pymd module<a class="headerlink" href="#module-pymd" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-pymd"></span><dl class="class">
+<dt id="pymd.Cell">
+<em class="property">class </em><code class="descclassname">pymd.</code><code class="descname">Cell</code><a class="headerlink" href="#pymd.Cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">_ctypes.Structure</span></code></p>
+<p>Inteface to C structure.</p>
+<dl class="attribute">
+<dt id="pymd.Cell.ix">
+<code class="descname">ix</code><a class="headerlink" href="#pymd.Cell.ix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymd.Cell.iy">
+<code class="descname">iy</code><a class="headerlink" href="#pymd.Cell.iy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymd.Cell.iz">
+<code class="descname">iz</code><a class="headerlink" href="#pymd.Cell.iz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymd.Cell.n_particles">
+<code class="descname">n_particles</code><a class="headerlink" href="#pymd.Cell.n_particles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymd.Cell.neigh">
+<code class="descname">neigh</code><a class="headerlink" href="#pymd.Cell.neigh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymd.Cell.nneigh">
+<code class="descname">nneigh</code><a class="headerlink" href="#pymd.Cell.nneigh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymd.Cell.particles">
+<code class="descname">particles</code><a class="headerlink" href="#pymd.Cell.particles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymd.CellList">
+<em class="property">class </em><code class="descclassname">pymd.</code><code class="descname">CellList</code><span class="sig-paren">(</span><em>sys</em><span class="sig-paren">)</span><a class="headerlink" href="#pymd.CellList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">_ctypes.Structure</span></code></p>
+<p>Inteface to C structure.</p>
+<dl class="attribute">
+<dt id="pymd.CellList.cells_side">
+<code class="descname">cells_side</code><a class="headerlink" href="#pymd.CellList.cells_side" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymd.CellList.list">
+<code class="descname">list</code><a class="headerlink" href="#pymd.CellList.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymd.CellList.ncells">
+<code class="descname">ncells</code><a class="headerlink" href="#pymd.CellList.ncells" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymd.CellList.size">
+<code class="descname">size</code><a class="headerlink" href="#pymd.CellList.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymd.Integrator">
+<em class="property">class </em><code class="descclassname">pymd.</code><code class="descname">Integrator</code><a class="headerlink" href="#pymd.Integrator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">_ctypes.Structure</span></code></p>
+<p>Inteface to C structure.</p>
+<dl class="attribute">
+<dt id="pymd.Integrator.timestep">
+<code class="descname">timestep</code><a class="headerlink" href="#pymd.Integrator.timestep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymd.MD">
+<em class="property">class </em><code class="descclassname">pymd.</code><code class="descname">MD</code><span class="sig-paren">(</span><em>system</em>, <em>clist</em>, <em>integ</em><span class="sig-paren">)</span><a class="headerlink" href="#pymd.MD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">_ctypes.Structure</span></code></p>
+<p>This class with for loading the system and running the simulation</p>
+<dl class="method">
+<dt id="pymd.MD.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymd.MD.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs MD with number of loops defined in MD.system.n_steps, separated
+in an outer loop in python with npysteps, and an inner loop run in C
+with ncsteps, such that system.n_steps = npysteps * ncsteps</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymd.MD.runInnerLoop">
+<code class="descname">runInnerLoop</code><span class="sig-paren">(</span><em>i</em><span class="sig-paren">)</span><a class="headerlink" href="#pymd.MD.runInnerLoop" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymd.System">
+<em class="property">class </em><code class="descclassname">pymd.</code><code class="descname">System</code><span class="sig-paren">(</span><em>n_particles=1000</em>, <em>n_steps=1000</em>, <em>timestep=0.0005</em>, <em>saveevery=10</em><span class="sig-paren">)</span><a class="headerlink" href="#pymd.System" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">_ctypes.Structure</span></code></p>
+<p>Inteface to C structure. Defines atributes of the system under study.</p>
+<dl class="attribute">
+<dt id="pymd.System.force">
+<code class="descname">force</code><a class="headerlink" href="#pymd.System.force" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymd.System.init_velocities">
+<code class="descname">init_velocities</code><span class="sig-paren">(</span><em>from_C=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pymd.System.init_velocities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines way to initialize velocities. Random for the moment.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>from_C (bool): uses C rand() function with constant seed for initialization,
+otherwise uses Python&#8217;s random module with constant seed</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymd.System.kinetic">
+<code class="descname">kinetic</code><a class="headerlink" href="#pymd.System.kinetic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymd.System.n_particles">
+<code class="descname">n_particles</code><a class="headerlink" href="#pymd.System.n_particles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymd.System.n_steps">
+<code class="descname">n_steps</code><a class="headerlink" href="#pymd.System.n_steps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymd.System.nthreads">
+<code class="descname">nthreads</code><a class="headerlink" href="#pymd.System.nthreads" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymd.System.phicut">
+<code class="descname">phicut</code><a class="headerlink" href="#pymd.System.phicut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymd.System.position">
+<code class="descname">position</code><a class="headerlink" href="#pymd.System.position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymd.System.potential">
+<code class="descname">potential</code><a class="headerlink" href="#pymd.System.potential" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymd.System.rcut">
+<code class="descname">rcut</code><a class="headerlink" href="#pymd.System.rcut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymd.System.size">
+<code class="descname">size</code><a class="headerlink" href="#pymd.System.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymd.System.timestep">
+<code class="descname">timestep</code><a class="headerlink" href="#pymd.System.timestep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymd.System.velocity">
+<code class="descname">velocity</code><a class="headerlink" href="#pymd.System.velocity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymd.c_db_pointer">
+<code class="descclassname">pymd.</code><code class="descname">c_db_pointer</code><a class="headerlink" href="#pymd.c_db_pointer" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">LP_c_double</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymd.c_fl_pointer">
+<code class="descclassname">pymd.</code><code class="descname">c_fl_pointer</code><a class="headerlink" href="#pymd.c_fl_pointer" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">LP_c_float</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymd.c_int_pointer">
+<code class="descclassname">pymd.</code><code class="descname">c_int_pointer</code><a class="headerlink" href="#pymd.c_int_pointer" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">LP_c_int</span></code></p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pymd.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Bonafe - Foggia - Guennam - Tosi.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/pymd.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
