@@ -5,7 +5,7 @@ md-c
    :maxdepth: 4
 
    initial_conditions
-   main
+   md
    plotter
-   positions
+   pymd
    velocities

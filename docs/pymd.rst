@@ -1,7 +1,7 @@
-main module
+pymd module
 ===========
 
-.. automodule:: main
+.. automodule:: pymd
     :members:
     :undoc-members:
     :show-inheritance:

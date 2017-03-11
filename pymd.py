@@ -9,7 +9,7 @@
 
 import ctypes as C
 import numpy as np
-import positions as pos
+import initial_conditions as pos
 import velocities as vels
 import time
 
@@ -20,7 +20,7 @@ c_fl_pointer = C.POINTER(C.c_float)
 c_db_pointer = C.POINTER(C.c_double)
 c_int_pointer = C.POINTER(C.c_int)
 
-mdc = C.CDLL('../libmd.so')
+mdc = C.CDLL('./libmd.so')
 
 
 class Cell(C.Structure):
@@ -231,7 +231,7 @@ class MD(C.Structure):
                               C.byref(self.clist), C.byref(self.integ))
         return self.system.potential, self.system.kinetic
 
-        
+
 if __name__ == "__main__":
     my_system = System()
     my_clist = CellList(my_system)

@@ -3,7 +3,7 @@ from PyQt4 import QtGui
 
 import matplotlib
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
+from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
 import matplotlib.pyplot as plt 
 
 import random
@@ -12,7 +12,7 @@ import numpy as np
 
 from time import sleep
 
-import main as pymd
+import pymd as pymd
 
 
 

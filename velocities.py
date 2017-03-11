@@ -1,7 +1,7 @@
 """
-.. module:: initial velocities
+.. module:: initial_velocities
    :platform: GNU Linux
-   :synopsis: Python interface for a C code to run efficient MD simulations.
+   :synopsis: Initial velocities distributions.
 
 .. moduleauthor:: TeamMD WCTP17 <no@email.com>
 

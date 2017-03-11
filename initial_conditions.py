@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 
-def simple_cubic(density,n_particles):
+def simplecubic(density,n_particles):
     """ 
     Calculates the positions of particles when they are in a simple cubic crystaline shape. 
     
