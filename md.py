@@ -12,6 +12,7 @@ import numpy as np
 
 from time import sleep
 
+
 import pymd as pymd
 
 
@@ -25,7 +26,7 @@ running = False
 #                                        CLASS
 #============================================================================================
 class RunParam():
-
+    ''' Estructura de datos de los parametros de la simulacion.'''
     def __init__(self):
         self.npart        = 100
  	self.dt           = 0.0005
@@ -45,7 +46,7 @@ class RunParam():
         self.nproc        = 4
         self.saveevery    = 10
 
-        self.outerloops    = 0
+        self.outerloops   = 0
         
 #============================================================================================
 #                                        CLASS
@@ -60,14 +61,18 @@ class SolverInterface():
 #                                        CLASS
 #============================================================================================
 class Results():
-    
+    ''' Estructura de datos de resultados. 
+        Se incluyen los nombres de cada resultado y de la variable independiente.
+    '''
     def __init__(self):
         self.time = 0
         self.data = 0
-
+        self.ndata = 0
+        self.independentParName = "Tiempo"
+        self.varName = variables
     def redim(self,nvar=1, ndata=1):
-        self.time = np.zeros(ndata)
-        self.data = np.zeros((ndata, nvar))
+        self.time = np.zeros(ndata, dtype='float64')
+        self.data = np.zeros((ndata, nvar), dtype='float64')
 #============================================================================================
 #                                        CLASS
 #============================================================================================
@@ -77,7 +82,7 @@ class Window(QtGui.QDialog):
     
     #------------------------------------------------------------------------------------------	
     def __init__(self, parent=None):
-        
+        '''Inicializa el formulario de la interfaz grafica. Posiciona los diferentes componentes (cuadros de texto, liezos, etc.)'''
 	self.myRunParam = RunParam()
         self.myResults = Results()
 
@@ -88,7 +93,7 @@ class Window(QtGui.QDialog):
 	
 	#w=self.frameGeometry().width() 
 	
-        self.setWindowTitle('Dinamica Molecular WTPC2017')
+        self.setWindowTitle('Dinamica Molecular - WTPC2017')
 	
 
         # una instancia de figura en la cual dibujar
@@ -103,9 +108,9 @@ class Window(QtGui.QDialog):
         #self.toolbar = NavigationToolbar(self.canvas, self)
 
         # Just some button connected to `plot` method
-        self.btnPlot = QtGui.QPushButton('&Ejecutar')
-        self.btnPlot.clicked.connect(self.runMD) #plot
-	self.btnPlot.setFixedSize(80,20)
+        self.btnRun = QtGui.QPushButton('&Ejecutar')
+        self.btnRun.clicked.connect(self.runMD) #plot
+	self.btnRun.setFixedSize(80,20)
 
 	# Boton para carga datos
         self.btnLoadValues = QtGui.QPushButton('&Cargar')
@@ -170,14 +175,16 @@ class Window(QtGui.QDialog):
         #Cuadro de texto Temperatura inicial
 	self.txtT0 = QtGui.QLineEdit()
 	self.txtT0.setFixedSize(60,20)
-        self.lblT0 = QtGui.QLabel("Temperatura Incial")
-	
         
+        self.cmbT0 = QtGui.QComboBox(self)
+	self.cmbT0.addItem("T0 (Random)")
+	self.cmbT0.addItem("T0 (Maxwell-Boltzman)")
 
-        # Boton para conectar con el metodo que lee los parametros 
-        self.btnRun = QtGui.QPushButton('&Leer Datos')
-        self.btnRun.clicked.connect(self.readValues)
- 	self.btnRun.setFixedSize(80,20)
+
+        # Boton para conectar con el metodo que guarda los resultados
+        self.btnSaveResults = QtGui.QPushButton('&Guardar Resultados')
+        self.btnSaveResults.clicked.connect(self.saveResults)
+ 	self.btnSaveResults.setFixedSize(140,20)
         
         
   	
@@ -229,7 +236,7 @@ class Window(QtGui.QDialog):
         gridLayout.addWidget(self.lblRcut,5,0) 
         gridLayout.addWidget(self.lblEpsilon,6,0)
         gridLayout.addWidget(self.lblSigma,7,0)
-        gridLayout.addWidget(self.lblT0,8,0)
+        gridLayout.addWidget(self.cmbT0,8,0)
 
 	gridLayout.addWidget(self.lblNProc,9,0)
 
@@ -252,7 +259,7 @@ class Window(QtGui.QDialog):
         gridLayout.addWidget(self.cmbPostVar,10,1)
 
 	gridLayout.addWidget(self.btnRun,11,0)
-        gridLayout.addWidget(self.btnPlot,12,0)
+        gridLayout.addWidget(self.btnSaveResults,12,0)
 
 	
 
@@ -260,6 +267,7 @@ class Window(QtGui.QDialog):
 
 #------------------------------------------------------------------------------------------
     def loadValues(self):
+        ''' Carga los valores de los parametros del modelo a la intergaz grafica. '''
         self.txtNPart.setText(str(self.myRunParam.npart))
         self.txtTStep.setText(str(self.myRunParam.dt))
 	if self.cmbNStepsOrTTime.currentText() == "Nro de pasos":
@@ -290,10 +298,44 @@ class Window(QtGui.QDialog):
 
         # plot data
         ax.plot(x[0:n-1],y[0:n-1],'o-')
+        plt.ylabel(self.cmbPostVar.currentText())
+        plt.xlabel('Tiempo')
  	self.figure.canvas.draw()
         # refresh canvas
         self.canvas.draw()
         self.figure.canvas.flush_events()
+#------------------------------------------------------------------------------------------
+    def saveResults(self):
+        ''' Guarda los resultados. '''
+        self.writeCSV(fileName="Resultados.csv",res=self.myResults)
+        return
+#------------------------------------------------------------------------------------------
+    def writeCSV(self,fileName,res):
+        ''' Escribe la estructura de resultados en un archivo csv. '''
+        f=open(fileName, 'w')
+        f.write("%s,%s,%s,%s,%s\n" % (res.independentParName , res.varName[0], res.varName[1], res.varName[2], res.varName[3]) )
+        for i1 in range(res.ndata):
+            f.write("%f,%f,%f,%f,%f\n" % (res.time[i1], res.data[i1,0], res.data[i1,1], res.data[i1,2], res.data[i1,3]))
+        f.close()
+        return
+#------------------------------------------------------------------------------------------
+    def enableDisableWidgets(self,enabled=True):
+        self.txtNPart.setEnabled(enabled)
+	self.txtTStep.setEnabled(enabled)
+        self.txtNStepsOrTTime.setEnabled(enabled)
+        self.txtDensOrCellSize.setEnabled(enabled)
+        self.txtRcut.setEnabled(enabled)
+        self.txtEpsilon.setEnabled(enabled)
+        self.txtSigma.setEnabled(enabled)
+        self.txtT0.setEnabled(enabled)
+        self.txtNProc.setEnabled(enabled)
+        self.cmbNStepsOrTTime.setEnabled(enabled)
+        self.cmbDensOrCellSize.setEnabled(enabled)
+        self.cmbT0.setEnabled(enabled)
+        self.btnLoadValues.setEnabled(enabled)
+        self.btnSaveResults.setEnabled(enabled)
+        self.btnRun.setEnabled(enabled) 
+        return
 #------------------------------------------------------------------------------------------
     def readValues(self):
         ''' Lee los valores de las cuadros de textos para ser pasados como argumento '''
@@ -352,35 +394,39 @@ class Window(QtGui.QDialog):
         print 'Nro de Procesadores      : ',self.myRunParam.nproc
 #------------------------------------------------------------------------------------------        
     def post(self):
-        '''  '''
-        if running == False:
+        ''' Grafica los resultados luego de finalizada la corrida '''
+        if running == False and self.myRunParam.outerloops > 0:
             ivar = self.cmbPostVarChangeText()        
-            self.plotResults(self.myResults.time,self.myResults.data[:,ivar],self.myRunParam.outerloops)
+            self.plotResults(self.myResults.time,self.myResults.data[:,ivar],self.myRunParam.outerloops) #
 #------------------------------------------------------------------------------------------ 
     def runMD(self):
+        ''' Comanda la corrida. Crea el sistema, las celdas, el integrador y el modelo. LLama luego al metodo que corre el modelo.
+            En cada llamada al metodo que corre el modelo, se adjuntan los resultados a la estructura de datos de resultados. 
+        '''
         self.readValues()
         self.myRunParam.outerloops = int(self.myRunParam.nsteps/self.myRunParam.saveevery)
         self.myResults.redim(4,self.myRunParam.outerloops)
-	self.btnRun.setEnabled(False) 
-        my_system = pymd.System(n_particles=self.myRunParam.npart, 
+	self.myResults.ndata = self.myRunParam.outerloops
+        self.enableDisableWidgets(enabled=False) 
+        my_system = pymd.System(size=self.myRunParam.cellSize, n_particles=self.myRunParam.npart, 
                                 n_steps=self.myRunParam.nsteps, 
-                                timestep=self.myRunParam.dt, saveevery=10)
+                                timestep=self.myRunParam.dt, saveevery=10,
+                                rcut=self.myRunParam.rcut , epsilon=self.myRunParam.epsilon, sigma=self.myRunParam.sigma, 
+                                T0=self.myRunParam.T0 )
         my_clist  = pymd.CellList()
         my_integ  = pymd.Integrator()
         this_MD   = pymd.MD(my_system, my_clist, my_integ)
         
-        
-
         #["Temperatura", "E. Potencial", "E. Cinetica", "E. Total"]
 	running = True
         for i in range(self.myRunParam.outerloops):
             ivar = self.cmbPostVarChangeText()
-            self.myResults.time[i] = float(i) * self.myRunParam.dt          
-            self.myResults.data[i,1], self.myResults.data[i,2]  = this_MD.runInnerLoop(i)
-	    self.myResults.data[i,3] = self.myResults.data[i,1] +  self.myResults.data[i,2]	
+            self.myResults.time[i] = float(i*self.myRunParam.saveevery) * self.myRunParam.dt          
+            self.myResults.data[i,:] = this_MD.runInnerLoop(i)
             self.plotResults(self.myResults.time[0:i],self.myResults.data[0:i,ivar],i)
-        self.btnRun.setEnabled(True)
-        running = false  
+        
+        running = False
+        self.enableDisableWidgets(enabled=True)   
 	return
 #============================================================================================
 #                                        MAIN
