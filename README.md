@@ -1,7 +1,7 @@
-#Molecular Dynamics
+#Molecular Dynamics in Python
 
-Graphic interface for Lennard-Jones molecular dynamics. Need to proportion: number of particles, time step, number of steps, particle density or initial distancebetween particles, cut of radius, epsilon and sigma parameters or Lennard-Jones potencial, initial velocity distribution and number of procesors.
+GUI for Lennard-Jones molecular dynamics. User should input: number of particles, time step, number of steps, particle density or initial distancebetween particles, cutoff radius, epsilon and sigma parameters or Lennard-Jones potential, initial velocity distribution and number of processors.
 
-Minimal c core for Lennard-Jones molecular dynamics. Extended and ported to Python.
+Based on minimal C core for Lennard-Jones molecular dynamics by Pablo Alcain, extended and ported to Python.
 
-This program can calculate total energy, potencial energy, cinetic energy and temperature vs time. It also gives a real time plot of this four things.
+This program can calculate total energy, potencial energy, kinetic energy and temperature vs time. It also shows a real time plot of this four variables.
