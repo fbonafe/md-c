@@ -1,6 +1,6 @@
 #include "force.h"
 
-void newton(System *sys, CellList *clist) {
+void newton(System *sys, CellList *clist, double sigma, double epsilon, double mass) {
   double epot = 0.0;
   for (int i = 0; i < 3 * sys->nthreads * sys->n_particles; i++)
     sys->force[i] = 0.0;
@@ -19,7 +19,7 @@ void newton(System *sys, CellList *clist) {
           for (int k = 0; k < 3; k++)
             dr[k] = sys->position[3*i+k] - sys->position[3*j+k];
           minimum_images(sys, dr);
-          epot += calculate_force(sys, i, j, dr, tid);
+          epot += calculate_force(sys, i, j, dr, tid, sigma, epsilon, mass);
         }
       }
       for (int d = 0; d < cell.nneigh; d++) {
@@ -32,7 +32,7 @@ void newton(System *sys, CellList *clist) {
             for (int k = 0; k < 3; k++)
               dr[k] = sys->position[3*i+k] - sys->position[3*j+k];
             minimum_images(sys, dr);
-            epot += calculate_force(sys, i, j, dr, tid);
+            epot += calculate_force(sys, i, j, dr, tid, sigma, epsilon, mass);
           }
         }
       }
@@ -57,7 +57,7 @@ inline void minimum_images(System *sys, double *dr) {
 }
 
 //__attribute__((always_inline,pure))
-inline double calculate_force(System *sys, int i, int j, double *dr, int tid) {
+inline double calculate_force(System *sys, int i, int j, double *dr, int tid, double sigma, double epsilon, double mass) {
   double distance = 0.0;
   for (int k = 0; k < 3; k++) {
     distance += dr[k] * dr[k];
@@ -67,8 +67,10 @@ inline double calculate_force(System *sys, int i, int j, double *dr, int tid) {
     double rm2 = 1.0/distance;
     double rm6 = rm2 * rm2 * rm2;
     double rm12 = rm6 * rm6;
-    double phi  = 4.0 * (rm12 - rm6);
-    double dphi = 24.0*rm2*(2.0*rm12 - rm6);
+	double sigma2 = sigma * sigma;
+	double sigma6 = sigma2 * sigma2 * sigma2;
+    double phi  = 4.0 * epsilon * sigma6 *(sigma6*rm12 - rm6);
+    double dphi = 24.0 * mass * rm2 * epsilon * sigma6 *(2.0*sigma6*rm12 - rm6);
     for (int k = 0; k < 3; k++) {
       sys->force[3*i+k+offset] += dphi * dr[k];
       sys->force[3*j+k+offset] -= dphi * dr[k];

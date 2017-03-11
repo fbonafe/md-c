@@ -11,6 +11,7 @@ struct system_t {
   int n_steps;
   double rcut, phicut;
   int nthreads; // This might not be the best choice
+  double sigma, epsilon, mass;
 };
 
 typedef struct system_t System;
